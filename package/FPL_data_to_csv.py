@@ -22,7 +22,7 @@ player_json_blob = json_blob['elements']
 df = pd.DataFrame.from_dict(player_json_blob)
 
 # Get just the columns that we care about
-player_df = df[['id','first_name','second_name','web_name','team','element_type','ict_index','points_per_game','selected_by_percent','total_points','minutes','goals_scored','assists','clean_sheets','bonus']]
+player_df = df[['web_name','team','element_type','ict_index','points_per_game','selected_by_percent','total_points','minutes','goals_scored','assists','clean_sheets','bonus','form','now_cost','value_form','value_season','goals_conceded','own_goals','penalties_saved','penalties_missed','yellow_cards','red_cards','saves']]
 
 # Write to a csv file so that we can have a look at it and/or import into Tableau
 player_df.to_csv('FPL_player_data.csv', encoding='utf-8')
