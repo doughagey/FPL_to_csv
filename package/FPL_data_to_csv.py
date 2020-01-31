@@ -29,33 +29,43 @@ def fpl_to_csv():
     # Get just the columns that we care about
     player_df = df[['id', 'first_name', 'second_name', 'web_name', 'team', 'element_type', 'ict_index', 'points_per_game', 'selected_by_percent', 'total_points', 'minutes', 'goals_scored', 'assists', 'clean_sheets', 'bonus', 'form', 'now_cost', 'value_form', 'value_season', 'goals_conceded', 'own_goals', 'penalties_saved', 'penalties_missed', 'yellow_cards', 'red_cards', 'saves']]
     position_df = df_pos[['id', 'plural_name_short']]
-    teams_df = df_teams[['id', 'name', 'short_name', 'strength', 'strength_overall_home', 'strength_overall_away', 'strength_attack_home', 'strength_attack_away', 'strength_defence_home', 'strength_defence_away']]
+    teams_df = df_teams[['id', 'short_name']]
+    merge1_df = pd.merge(player_df, position_df, left_on='element_type', right_on='id', how='inner', suffixes=('_left','_right'))
+    table = pd.merge(merge1_df, teams_df, left_on='team', right_on='id', how='inner')
+
+    ################################################
+    # Rename/drop columns so that only one ID exists
+    ################################################
+
     # Need this in order to avoid warnings that we don't care about
     pd.options.mode.chained_assignment = None
 
-    # Convert the datatypes of two columns to int so we can replace them with better values
-    player_df['team'] = player_df.team.astype(int)
-    player_df['element_type'] = player_df.element_type.astype(int)
-
-    # Create maps to replace team and position values with meaningful values (team maps will need updated yearly)
-    ########################################################################################
-    # REPLACE THESE WITH DICTIONARY SERIES FROM DATAFRAMES ABOVE FOR TEAMS AND POSITIONS !!!
-    ########################################################################################
-    position_map = {1: "GK", 2: "DEF", 3: "MID", 4: "FWD"}
-    team_map = {1: "ARS", 2: "AVL", 3: "BOU", 4: "BHA", 5: "BUR", 6: "CHE", 7: "CRY", 8: "EVE", 9: "LEI", 10: "LIV", 11: "MCI", 12: "MUN", 13: "NEW", 14: "NOR", 15: "SHU", 16: "SOU", 17: "TOT", 18: "WAT", 19: "WHU", 20: "WOL"}
-
-    player_df = player_df.replace({'element_type': position_map})
-    player_df = player_df.replace({'team': team_map})
-
-    ########################
-    # COMBINE THE DATAFRAMES
-    ########################
-
     ###################################################################################################
-    # GET FIXTURE DIFFICULTY HERE AND EITHER EXPORT AS SEPARATE .CSV FILE OR ADD IT ON TO THE PLAYER DF
+    # GET FIXTURE DIFFICULTY AND ADD IT ON TO THE PLAYER DF
     ###################################################################################################
+    for index, row in table.iterrows():
+        print('Processing player: ', table['id'])
+        url = 'https://fantasy.premierleague.com/api/element-summary/' + str(table['id']) + '/'
+        # use requests to get the player data in json format
+        r = requests.get(url).json()
+        # take just the fixture portion and put into Pandas DF
+        fix_df = pd.DataFrame(r['fixtures'])
+        fix_df.astype(int, errors='ignore')
 
-    # Write to a csv file so that we can have a look at it and/or import into Tableau
+        try:
+            difficulty = df[['event', 'difficulty']]
+            # print(table)
+        except Exception as e:
+            print('Problem with ', player)
+            print(e)
+            print(table)
+            continue
+
+        try:
+            fixture = 'GW' + str(int(row['event']))
+            except Exception as e:
+                print(e)
+                # Write to a csv file so that we can have a look at it and/or import into Tableau
     player_df.to_csv('FPL_player_data.csv', encoding='utf-8', index=False)
 
 fpl_to_csv()
