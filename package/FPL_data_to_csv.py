@@ -20,52 +20,62 @@ def fpl_to_csv():
 
     # Get only the Player Info data blob imbedded in the response
     player_json_blob = json_blob['elements']
-    df = pd.DataFrame(player_json_blob)
+
     position_json_blob = json_blob['element_types']
-    df_pos = pd.DataFrame(position_json_blob)
+    pos_map = {}
+    for pos in position_json_blob:
+        print(pos['id'])
+        print(pos['singular_name_short'])
+        pos_map.update({pos['id'] : pos['singular_name_short']})
+
     team_json_blob = json_blob['teams']
-    df_teams = pd.DataFrame(team_json_blob)
+    team_map = {}
+    for team in team_json_blob:
+        print(team['id'])
+        print(team['short_name'])
+        team_map.update({team['id']: team['short_name']})
 
     # Get just the columns that we care about
+    df = pd.DataFrame(player_json_blob)
     player_df = df[['id', 'first_name', 'second_name', 'web_name', 'team', 'element_type', 'ict_index', 'points_per_game', 'selected_by_percent', 'total_points', 'minutes', 'goals_scored', 'assists', 'clean_sheets', 'bonus', 'form', 'now_cost', 'value_form', 'value_season', 'goals_conceded', 'own_goals', 'penalties_saved', 'penalties_missed', 'yellow_cards', 'red_cards', 'saves']]
-    position_df = df_pos[['id', 'plural_name_short']]
-    teams_df = df_teams[['id', 'short_name']]
-    merge1_df = pd.merge(player_df, position_df, left_on='element_type', right_on='id', how='inner', suffixes=('_left','_right'))
-    table = pd.merge(merge1_df, teams_df, left_on='team', right_on='id', how='inner')
+    #position_df = df_pos[['id', 'plural_name_short']]
+    #teams_df = df_teams[['id', 'short_name']]
 
-    ################################################
-    # Rename/drop columns so that only one ID exists
-    ################################################
 
     # Need this in order to avoid warnings that we don't care about
     pd.options.mode.chained_assignment = None
 
-    ###################################################################################################
+    # Replace all team and position numerical values with their corresponding text values per pos_map and team_map
+    player_df = player_df.replace({'element_type': pos_map})
+    player_df = player_df.replace({'team': team_map})
+
+    player_df.to_csv('FPL_player_data.csv', encoding='utf-8', index=False)
+
     # GET FIXTURE DIFFICULTY AND ADD IT ON TO THE PLAYER DF
-    ###################################################################################################
-    for index, row in table.iterrows():
-        print('Processing player: ', table['id'])
-        url = 'https://fantasy.premierleague.com/api/element-summary/' + str(table['id']) + '/'
+    for index, row in player_df.iterrows():
+        print('Processing player: ', row['id'])
+        url = 'https://fantasy.premierleague.com/api/element-summary/' + str(row['id']) + '/'
         # use requests to get the player data in json format
-        r = requests.get(url).json()
+        r = requests.get(url)
+        json_blob = json.loads(r.text)
         # take just the fixture portion and put into Pandas DF
-        fix_df = pd.DataFrame(r['fixtures'])
+        fixture_json_blob = json_blob['fixtures']
+        fix_df = pd.DataFrame(fixture_json_blob)
         fix_df.astype(int, errors='ignore')
 
+        gameweek = fix_df['event'].to_list()
         try:
-            difficulty = df[['event', 'difficulty']]
-            # print(table)
-        except Exception as e:
-            print('Problem with ', player)
-            print(e)
-            print(table)
-            continue
+            gameweek = [x for x in gameweek if str(x) != 'nan']
+            gameweek = list(map(int, gameweek))
+            gameweek_len = len(gameweek)
+            difficulty = fix_df['difficulty'].to_list()
+            if len(difficulty) == len(gameweek) +1:
+                difficulty.pop()
+                print('OK')
 
-        try:
-            fixture = 'GW' + str(int(row['event']))
-            except Exception as e:
+        except Exception as e:
                 print(e)
-                # Write to a csv file so that we can have a look at it and/or import into Tableau
-    player_df.to_csv('FPL_player_data.csv', encoding='utf-8', index=False)
+
+            # Write to a csv file so that we can have a look at it and/or import into Tableau
 
 fpl_to_csv()
