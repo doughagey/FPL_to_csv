@@ -64,6 +64,7 @@ def fpl_to_csv():
         # Take just the fixture info and put into Pandas Dataframe
         fixture_json_blob = json_blob['fixtures']
         fix_df = pd.DataFrame(fixture_json_blob)
+        # If nan then remove row
         fix_df.astype(int, errors='ignore')
         gameweek = fix_df['event'].to_list()
         try:
@@ -86,7 +87,13 @@ def fpl_to_csv():
 
     # Sort columns so they're in alphabetical order
     fixture_df = fixture_df.reindex(sorted(fixture_df.columns), axis=1)
-
+    # Convert id column to integer. All values in df default to float because there are NaN values
+    fixture_df['id'] = fixture_df['id'].astype(pd.Int32Dtype())
+    # Convert all the nan values to 0. This is the only way to get rid of all the decimal values and
+    # won't hurt calculations unless you're dividing by the number of values. Instead, just add the
+    # gameweek values up for players and compare them instead of getting an average
+    fixture_df = fixture_df.fillna(0)
+    fixture_df = fixture_df.astype(int, errors='ignore')
     # Write to a csv file so that we can have a look at it and/or import into Tableau
     fixture_df.to_csv('FPL_fixture_list.csv', encoding='utf-8', index=False)
 
