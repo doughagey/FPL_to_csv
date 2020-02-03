@@ -51,7 +51,8 @@ def fpl_to_csv():
     player_df = player_df.replace({'team': team_map})
     player_df.sort_values('id', axis=0, ascending=True, inplace=True, na_position='last')
     player_df['Cost'] = player_df['now_cost']/10
-    player_df.drop(['now_cost'], axis=1)
+    player_df.drop(['now_cost'], axis=1, inplace=True)
+    player_df = player_df.rename(columns={'element_type' : 'position'})
     player_df.to_csv('FPL_player_data.csv', encoding='utf-8', index=False)
 
     # GET FIXTURE DIFFICULTY AND ADD IT ON TO THE PLAYER DF
