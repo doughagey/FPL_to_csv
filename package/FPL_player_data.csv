@@ -415,7 +415,7 @@ id,first_name,second_name,web_name,team,position,ict_index,points_per_game,selec
 414,Rúben Diogo,da Silva Neves,Neves,WOL,MID,80.5,2.4,4.5,61,1952,2,1,5,4,1.8,0.3,11.7,27,0,0,0,6,0,0,100.0,5.2
 415,João Filipe Iria,Santos Moutinho,Moutinho,WOL,MID,151.7,3.4,5.2,85,2155,1,7,5,11,3.0,0.6,15.7,30,0,0,0,5,0,0,,5.4
 416,Morgan,Gibbs-White,Gibbs-White,WOL,MID,6.2,2.0,0.1,8,122,0,1,0,0,0.2,0.0,1.7,2,0,0,0,0,0,0,100.0,4.7
-417,Adama,Traoré,Traoré,WOL,MID,159.9,4.3,20.5,103,1925,4,7,4,14,5.0,0.9,17.8,28,0,0,0,0,0,0,75.0,5.8
+417,Adama,Traoré,Traoré,WOL,MID,159.9,4.3,20.4,103,1925,4,7,4,14,5.0,0.9,17.8,28,0,0,0,0,0,0,75.0,5.8
 418,Hélder,Costa,Costa,WOL,MID,0.0,0.0,0.0,0,0,0,0,0,0,0.0,0.0,0.0,0,0,0,0,0,0,0,0.0,4.9
 419,Ivan,Cavaleiro,Cavaleiro,WOL,MID,0.0,0.0,0.0,0,0,0,0,0,0,0.0,0.0,0.0,0,0,0,0,0,0,0,0.0,4.9
 420,Leander,Dendoncker,Dendoncker,WOL,MID,67.2,2.5,9.8,62,1998,2,0,4,6,3.8,0.9,14.1,29,1,0,0,2,0,0,100.0,4.4
@@ -610,7 +610,7 @@ id,first_name,second_name,web_name,team,position,ict_index,points_per_game,selec
 612,Nabil,Bentaleb,Bentaleb,NEW,MID,5.9,2.0,0.0,2,90,0,0,1,0,2.0,0.4,0.4,0,0,0,0,1,0,0,,5.0
 613,Mbwana,Samatta,Samatta,AVL,FWD,13.7,8.0,0.2,8,90,1,0,0,2,8.0,1.3,1.3,2,0,0,0,0,0,0,,6.0
 614,Valentino,Lazaro,Lazaro,NEW,MID,0.6,1.0,0.0,1,36,0,0,0,0,1.0,0.2,0.2,0,0,0,0,0,0,0,,5.5
-615,Steven,Bergwijn,Bergwijn,TOT,MID,6.2,10.0,1.1,10,69,1,0,1,2,10.0,1.3,1.3,0,0,0,0,0,0,0,,7.5
+615,Steven,Bergwijn,Bergwijn,TOT,MID,6.2,10.0,1.2,10,69,1,0,1,2,10.0,1.3,1.3,0,0,0,0,0,0,0,,7.5
 616,Tomas,Soucek,Soucek,WHU,MID,7.3,2.0,0.0,2,84,0,0,0,0,2.0,0.4,0.4,3,0,0,0,0,0,0,,5.0
 617,Pablo,Marí,Marí,ARS,DEF,0.0,0.0,0.0,0,0,0,0,0,0,0.0,0.0,0.0,0,0,0,0,0,0,0,,5.0
 618,Bruno Miguel,Borges Fernandes,Fernandes,MUN,MID,6.4,2.0,2.2,2,90,0,0,1,0,2.0,0.2,0.2,0,0,0,0,1,0,0,,8.0
