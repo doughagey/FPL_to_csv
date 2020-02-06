@@ -41,7 +41,7 @@ def fpl_to_csv():
 
     # Get just the columns that we care about
     df = pd.DataFrame(player_json_blob)
-    player_df = df[['id', 'first_name', 'second_name', 'web_name', 'team', 'element_type', 'ict_index', 'points_per_game', 'selected_by_percent', 'total_points', 'minutes', 'goals_scored', 'assists', 'clean_sheets', 'bonus', 'form', 'now_cost', 'value_form', 'value_season', 'goals_conceded', 'own_goals', 'penalties_saved', 'penalties_missed', 'yellow_cards', 'red_cards', 'saves']]
+    player_df = df[['id', 'first_name', 'second_name', 'web_name', 'team', 'element_type', 'ict_index', 'points_per_game', 'selected_by_percent', 'total_points', 'minutes', 'goals_scored', 'assists', 'clean_sheets', 'bonus', 'form', 'now_cost', 'value_form', 'value_season', 'goals_conceded', 'own_goals', 'penalties_saved', 'penalties_missed', 'yellow_cards', 'red_cards', 'saves','chance_of_playing_next_round']]
 
     # Need this bit in order to avoid warnings that we don't care about
     pd.options.mode.chained_assignment = None
